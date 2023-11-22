@@ -17,7 +17,7 @@ public class OrderService {
 
     public Order save(Order order) {
         order = orderRepository.save(order);
-        producer.sendOrder(order.toString());
+        producer.sendOrder(order);
         return order;
     }
 }
