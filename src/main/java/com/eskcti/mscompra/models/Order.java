@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -24,16 +27,27 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String name;
 
+    @NotNull
+    @Min(1)
     private Long product;
 
+    @NotNull
+    @Min(1)
     private BigDecimal valueOrder;
 
+    @NotNull
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date purchaseDate;
 
+    @NotBlank
     private String cpfCustomer;
 
+    @NotBlank
     private String zipCode;
+
+    @NotBlank
+    private String email;
 }
