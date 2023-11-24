@@ -2,6 +2,7 @@ package com.eskcti.mscompra.resources;
 
 import com.eskcti.mscompra.models.Order;
 import com.eskcti.mscompra.services.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 
