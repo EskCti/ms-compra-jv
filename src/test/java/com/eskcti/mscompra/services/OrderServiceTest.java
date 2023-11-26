@@ -10,9 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.math.BigDecimal;
-import java.util.Date;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,10 +27,12 @@ public class OrderServiceTest {
     @Mock
     private Producer producer;
 
+    private DataMock dataMock = new DataMock();
+
     @DisplayName("Save order with success")
     @Test
     void shouldSaveAnOrderWithSuccess() {
-        var orderMock = getOrder();
+        var orderMock = dataMock.getOrder();
 
         Mockito.when(orderRepository.save(Mockito.any(Order.class))).thenReturn(orderMock);
         Mockito.doNothing().when(producer).sendOrder(Mockito.any(Order.class));
@@ -42,17 +42,5 @@ public class OrderServiceTest {
         assertEquals(orderMock.getZipCode(), orderSaved.getZipCode());
         assertTrue(orderSaved.getZipCode() != null);
 
-    }
-
-    Order getOrder() {
-        return Order.builder()
-                .name("João da Silva")
-                .valueOrder(BigDecimal.TEN)
-                .cpfCustomer("123456789012")
-                .email("joaodasilva@gmail.com")
-                .id(1L)
-                .purchaseDate(new Date())
-                .zipCode("12345678")
-                .build();
     }
 }
