@@ -73,4 +73,13 @@ public class OrderControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void shouldFailWhenFindNonExistingOrder() throws Exception {
+        var id = 2L;
+
+        mockMvc.perform(get(URL_ORDER.concat("/" + id)))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
 }
