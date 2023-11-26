@@ -4,6 +4,7 @@ import com.eskcti.mscompra.MscompraApplication;
 import com.eskcti.mscompra.models.Order;
 import com.eskcti.mscompra.services.DataMock;
 import com.eskcti.mscompra.services.OrderService;
+import com.eskcti.mscompra.services.exception.EntityNotFoundException;
 import com.eskcti.mscompra.services.rabbitmq.Producer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -18,8 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -81,5 +81,19 @@ public class OrderControllerTest {
         mockMvc.perform(get(URL_ORDER.concat("/" + id)))
                 .andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldDeleteOrderWithSuccess() throws Exception {
+        var id = 1L;
+
+        mockMvc.perform(delete(URL_ORDER.concat("/" + id)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        Throwable exception = assertThrows(EntityNotFoundException.class,
+                () -> orderService.deleteById(id));
+
+        assertEquals("O pedido de id: " + id + " nao existe na base de dados!", exception.getMessage());
     }
 }
