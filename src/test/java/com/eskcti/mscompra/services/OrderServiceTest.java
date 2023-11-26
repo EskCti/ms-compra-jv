@@ -84,4 +84,15 @@ public class OrderServiceTest {
         Mockito.verify(orderRepository, Mockito.atLeastOnce()).findById(id);
         Mockito.verify(orderRepository, Mockito.atLeastOnce()).deleteById(id);
     }
+
+    @Test
+    void shouldFailWhenRemoveNonExistingOrder() {
+        var id = 1L;
+
+        Mockito.when(orderRepository.findById(id)).thenReturn(Optional.empty());
+
+        Throwable exception = assertThrows(BusinessException.class, () -> orderService.deleteById(id));
+
+        assertEquals("O pedido de id: " + id + " nao existe na base de dados!", exception.getMessage());
+    }
 }
