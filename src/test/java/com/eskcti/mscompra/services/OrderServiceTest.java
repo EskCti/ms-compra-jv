@@ -2,6 +2,7 @@ package com.eskcti.mscompra.services;
 
 import com.eskcti.mscompra.models.Order;
 import com.eskcti.mscompra.repositories.OrderRepository;
+import com.eskcti.mscompra.services.exception.BusinessException;
 import com.eskcti.mscompra.services.rabbitmq.Producer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,10 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class OrderServiceTest {
@@ -42,5 +41,16 @@ public class OrderServiceTest {
         assertEquals(orderMock.getZipCode(), orderSaved.getZipCode());
         assertTrue(orderSaved.getZipCode() != null);
 
+    }
+
+    @Test
+    void shouldFailInSearchForNonExistingOrder() {
+        var id = 1L;
+
+        Throwable exception = assertThrows(BusinessException.class, () -> {
+            Order order = orderService.findOrFailById(id);
+        });
+
+        assertEquals("O pedido de id: " + id + " nao existe na base de dados!", exception.getMessage());
     }
 }
