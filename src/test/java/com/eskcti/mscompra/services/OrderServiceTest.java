@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,5 +54,20 @@ public class OrderServiceTest {
         });
 
         assertEquals("O pedido de id: " + id + " nao existe na base de dados!", exception.getMessage());
+    }
+
+    @Test
+    void shouldFindOrderWithSuccess() {
+        var orderMock = dataMock.getOrder();
+        var id = 1L;
+
+        Mockito.when(orderRepository.findById(id)).thenReturn(Optional.of(orderMock));
+
+        var order = orderService.findOrFailById(id);
+
+        assertEquals(orderMock.getName(), order.getName());
+        assertNotNull(order);
+
+        Mockito.verify(orderRepository, Mockito.atLeastOnce()).findById(id);
     }
 }
