@@ -70,4 +70,18 @@ public class OrderServiceTest {
 
         Mockito.verify(orderRepository, Mockito.atLeastOnce()).findById(id);
     }
+
+    @Test
+    void shouldRemoveOrderWithSuccess() {
+        var orderMock = dataMock.getOrder();
+        var id = 1L;
+
+        Mockito.when(orderRepository.findById(id)).thenReturn(Optional.of(orderMock));
+        Mockito.doNothing().when(orderRepository).deleteById(1L);
+
+        orderService.deleteById(id);
+
+        Mockito.verify(orderRepository, Mockito.atLeastOnce()).findById(id);
+        Mockito.verify(orderRepository, Mockito.atLeastOnce()).deleteById(id);
+    }
 }
