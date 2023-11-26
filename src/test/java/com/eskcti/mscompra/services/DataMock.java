@@ -14,6 +14,7 @@ public class DataMock {
                 .cpfCustomer("123456789012")
                 .email("joaodasilva@gmail.com")
                 .id(1L)
+                .product(1L)
                 .purchaseDate(new Date())
                 .zipCode("12345678")
                 .build();
