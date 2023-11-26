@@ -26,4 +26,11 @@ public class OrderService {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("O pedido de id: " + id + " nao existe na base de dados!"));
     }
+
+    public void deleteById(long id) {
+        orderRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("O pedido de id: " + id + " nao existe na base de dados!"));
+
+        orderRepository.deleteById(id);
+    }
 }
